@@ -166,7 +166,7 @@
     --stroke: rgba(255,255,255,0.1);
   }
 
-  main { position: relative }
+  main { position: relative; padding-top: 0 }
 
   .section { max-width: 1100px; margin: 0 auto; padding: 60px 20px }
   .section.alt { background: linear-gradient(180deg, rgba(255,198,43,0.02), rgba(10,58,125,0.02)) }

@@ -5,15 +5,29 @@
    */
   import { theme } from '$lib/stores/themeStore';
   import { CLUB_INFO } from '$lib/config';
+  import { onMount } from 'svelte';
 
   export let scrollToId = (id) => {};
+  
+  let isScrolled = false;
 
   function handleThemeToggle() {
     theme.toggle();
   }
+
+  onMount(() => {
+    const handleScroll = () => {
+      isScrolled = window.scrollY > 10;
+    };
+    
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  });
 </script>
 
-<header class="site-header">
+<svelte:window on:scroll={() => { isScrolled = window.scrollY > 10; }} />
+
+<header class="site-header" class:scrolled={isScrolled}>
   <nav class="nav">
     <a class="brand" href="/" aria-label="Inicio">
       <img src="/images/logo.png" alt="Logo del club" width="36" height="36" style="border-radius: 50;"/>
@@ -84,14 +98,27 @@
   .site-header { position: relative; overflow: clip }
   
   .nav {
-    max-width: 1100px;
-    margin: 0 auto;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    max-width: 100%;
+    margin: 0;
     padding: 18px 20px;
     display: flex;
     align-items: center;
     gap: 12px;
-    position: relative;
-    z-index: 10;
+    z-index: 100;
+    background: rgba(11, 18, 33, 0.8);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255, 198, 43, 0.1);
+    transition: all 200ms ease;
+  }
+
+  .nav :global(.site-header.scrolled) {
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    background: rgba(11, 18, 33, 0.95);
+    border-bottom-color: rgba(255, 198, 43, 0.2);
   }
   
   .brand { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; font-weight: 700 }
@@ -125,6 +152,7 @@
     position: relative;
     max-width: 100%;
     min-height: 600px;
+    margin-top: 80px;
     padding: 80px 20px;
     display: flex;
     align-items: center;
@@ -293,14 +321,14 @@
   }
 
   @media (max-width: 980px) {
-    .hero { padding: 60px 20px; min-height: 500px }
+    .hero { margin-top: 70px; padding: 60px 20px; min-height: 500px }
     .hero-content h1 { font-size: clamp(24px, 5vw, 42px) }
     .kpis { grid-template-columns: repeat(2, minmax(0,1fr)) }
   }
 
   @media (max-width: 560px) {
+    .hero { margin-top: 60px; padding: 40px 16px; min-height: auto }
     .menu { display: none }
-    .hero { padding: 40px 16px; min-height: auto }
     .kpis { grid-template-columns: 1fr }
     .actions { flex-direction: column }
     :global(.cta) { width: 100%; justify-content: center }
@@ -315,9 +343,15 @@
   }
 
   :global(.light-mode) .nav {
-    background: rgba(255,255,255,0.8);
+    background: rgba(245, 245, 245, 0.8);
     backdrop-filter: blur(10px);
-    border-bottom: 1px solid rgba(0,0,0,0.1);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  :global(.light-mode) .nav.scrolled {
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+    background: rgba(245, 245, 245, 0.95);
+    border-bottom-color: rgba(0, 0, 0, 0.2);
   }
 
   :global(.light-mode) .hero {
