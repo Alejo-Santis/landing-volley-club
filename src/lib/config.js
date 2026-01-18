@@ -15,7 +15,7 @@ export const EMAILJS_CONFIG = {
 // Club Information
 export const CLUB_INFO = {
   name: 'Vikings Voley Club',
-  phoneNumber: '573147282218',
+  phoneNumber: '57312345678',
   instagram: 'https://www.instagram.com/vikingos_voley_club/',
   facebook: 'https://facebook.com/',
   whatsapp: 'https://wa.me/'
