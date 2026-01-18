@@ -166,7 +166,7 @@
     --stroke: rgba(255,255,255,0.1);
   }
 
-  main { position: relative; padding-top: 0 }
+  main { position: relative; padding-top: 0; background: var(--bg) }
 
   .section { max-width: 1100px; margin: 0 auto; padding: 60px 20px }
   .section.alt { background: linear-gradient(180deg, rgba(255,198,43,0.02), rgba(10,58,125,0.02)) }
@@ -194,16 +194,37 @@
     background: linear-gradient(135deg, rgba(255,198,43,0.1), transparent);
     opacity: 0;
     transition: opacity 300ms ease;
+    pointer-events: none;
+  }
+
+  .card::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 100px;
+    height: 100px;
+    background: radial-gradient(circle, rgba(255,198,43,0.4), transparent);
+    border-radius: 50%;
+    opacity: 0;
+    transition: all 500ms ease;
+    pointer-events: none;
   }
 
   .card:hover {
     background: rgba(255,198,43,0.08);
     border-color: var(--primary-2);
-    transform: translateY(-6px);
-    box-shadow: 0 16px 32px rgba(255,198,43,0.1);
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(255,198,43,0.15);
   }
 
   .card:hover::before { opacity: 1; }
+
+  .card:hover::after {
+    top: -10px;
+    right: -10px;
+    opacity: 1;
+  }
 
   .card h3 { margin: 12px 0 8px; font-size: 18px; position: relative; z-index: 1 }
   .card p { color: var(--muted); font-size: 14px; line-height: 1.6; position: relative; z-index: 1; margin: 0 }
@@ -215,13 +236,30 @@
     border: 1px solid rgba(255,198,43,0.2);
     padding: 20px;
     border-radius: 16px;
-    transition: all 300ms ease;
+    transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .slot::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,198,43,0.1), transparent);
+    opacity: 0;
+    transition: opacity 300ms ease;
+    pointer-events: none;
   }
 
   .slot:hover {
     background: linear-gradient(135deg, rgba(10,58,125,0.25), rgba(255,198,43,0.15));
     border-color: var(--primary-2);
-    transform: translateY(-4px);
+    transform: translateY(-6px) scale(1.02);
+    box-shadow: 0 12px 28px rgba(255,198,43,0.12);
+  }
+
+  .slot:hover::before {
+    opacity: 1;
   }
 
   .slot h3 { margin: 0 0 8px; color: var(--primary-2); font-size: 16px; font-weight: 700 }
@@ -288,15 +326,29 @@
     aspect-ratio: 1/1;
     cursor: pointer;
     border: 1px solid rgba(255,198,43,0.2);
-    transition: all 300ms ease;
+    transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     max-height: 280px;
   }
 
+  .accion-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,198,43,0.2), transparent);
+    opacity: 0;
+    transition: opacity 300ms ease;
+    pointer-events: none;
+  }
+
   .accion-card:hover {
-    transform: translateY(-4px);
+    transform: translateY(-8px) scale(1.05);
     border-color: var(--primary-2);
-    box-shadow: 0 12px 28px rgba(255,198,43,0.2);
+    box-shadow: 0 16px 40px rgba(255,198,43,0.25);
+  }
+
+  .accion-card:hover::after {
+    opacity: 1;
   }
 
   .accion-card .g-img {
@@ -377,17 +429,32 @@
     border: 1px solid rgba(255,198,43,0.15);
     padding: 28px;
     border-radius: 18px;
-    transition: all 300ms ease;
+    transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .testimonio-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,198,43,0.08), transparent);
+    opacity: 0;
+    transition: opacity 300ms ease;
+    pointer-events: none;
   }
 
   .testimonio-card:hover {
     background: rgba(255,198,43,0.08);
     border-color: var(--primary-2);
-    transform: translateY(-8px);
+    transform: translateY(-8px) scale(1.02);
     box-shadow: 0 20px 40px rgba(255,198,43,0.15);
+  }
+
+  .testimonio-card:hover::before {
+    opacity: 1;
   }
 
   .stars { font-size: 16px; letter-spacing: 4px }
@@ -466,6 +533,111 @@
   .right { display: inline-flex; gap: 18px }
   .right a { color: var(--muted); text-decoration: none; transition: color 200ms ease }
   .right a:hover { color: var(--primary-2) }
+
+  /* Reveal on Scroll Animations */
+  .section {
+    animation: sectionReveal 0.8s ease-out;
+  }
+
+  .card {
+    animation: cardReveal 0.6s ease-out backwards;
+  }
+
+  .card:nth-child(1) { animation-delay: 0.1s; }
+  .card:nth-child(2) { animation-delay: 0.2s; }
+  .card:nth-child(3) { animation-delay: 0.3s; }
+  .card:nth-child(n+4) { animation-delay: 0.4s; }
+
+  .gallery-item {
+    animation: galleryReveal 0.7s ease-out backwards;
+  }
+
+  .gallery-item:nth-child(1) { animation-delay: 0.1s; }
+  .gallery-item:nth-child(2) { animation-delay: 0.2s; }
+  .gallery-item:nth-child(3) { animation-delay: 0.3s; }
+  .gallery-item:nth-child(n+4) { animation-delay: 0.4s; }
+
+  .testimonios .testimonio-card {
+    animation: testimonioReveal 0.7s ease-out backwards;
+  }
+
+  .testimonios .testimonio-card:nth-child(1) { animation-delay: 0.1s; }
+  .testimonios .testimonio-card:nth-child(2) { animation-delay: 0.2s; }
+  .testimonios .testimonio-card:nth-child(3) { animation-delay: 0.3s; }
+  .testimonios .testimonio-card:nth-child(n+4) { animation-delay: 0.4s; }
+
+  .acciones .accion-card {
+    animation: actionReveal 0.7s ease-out backwards;
+  }
+
+  .acciones .accion-card:nth-child(1) { animation-delay: 0.1s; }
+  .acciones .accion-card:nth-child(2) { animation-delay: 0.2s; }
+  .acciones .accion-card:nth-child(3) { animation-delay: 0.3s; }
+  .acciones .accion-card:nth-child(n+4) { animation-delay: 0.4s; }
+
+  @keyframes sectionReveal {
+    from {
+      opacity: 0;
+      transform: translateY(40px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes cardReveal {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes galleryReveal {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes testimonioReveal {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes actionReveal {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes revealCard {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 
   @media (prefers-reduced-motion: reduce) {
     * { animation: none !important; transition: none !important }
